@@ -26,14 +26,6 @@ export const validate = (values) => {
 		!confirmPassword ||
 		!checkRule
   ) {
-		console.log(    name,
-			familyName,
-			userName,
-			email,
-			phone,
-			password,
-			confirmPassword,
-			checkRule)
     err.empty = "Enter All Values!";
   } else {
     if (!regName.test(name)) {
