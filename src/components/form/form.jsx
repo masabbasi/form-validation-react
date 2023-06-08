@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { validate } from "../../middleware/validation.js";
 import "./form.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Form = () => {
+	const [error, setError] = useState({});
+	const [success,setSuccess] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     familyName: "",
@@ -13,29 +17,30 @@ const Form = () => {
     confirmPassword: "",
     checkRule: false,
   });
-  const [error, setError] = useState({});
-	const [success,setSuccess] = useState(false)
 
   const submitHandler = (e) => {
     e.preventDefault();
     const err = validate(formValues);
     setError(err);
 		setSuccess(Object.keys(err).length === 0 && true);
-		
-		if (success) {
-			setTimeout(() => {
-				setSuccess(false);
-				setFormValues({
-					name: "",
-					familyName: "",
-					userName: "",
-					email: "",
-					phone: "",
-					password: "",
-					confirmPassword: "",
-				})
-			}, 2000);
-		}
+		const isSuccess = Object.keys(err).length === 0;
+			setSuccess(isSuccess);
+			if (isSuccess) {
+				toast.success('Registration Was Successful.');
+				setTimeout(() => {
+					setSuccess(false);
+					setFormValues({
+						name: "",
+						familyName: "",
+						userName: "",
+						email: "",
+						phone: "",
+						password: "",
+						confirmPassword: "",
+						checkRule: false,
+					})
+				}, 2500);
+			}
   };
 
   const changeHandler = (inputs) => {
@@ -55,105 +60,117 @@ const Form = () => {
 
   return (
     <>
-		<h1 className="text-green-600 text-4xl bg-gray-400 p-2 rounded mb-2 font-medium">Sign Up</h1>
-      <form onSubmit={submitHandler} action="#" className="w-96 flex flex-col items-center justify-center">
-			<div className="text-red-400 text-sm font-bold text-center">
+		<h1 className="w-72 text-center text-white text-4xl bg-green-600 p-2 rounded mb-2 font-medium">Sign Up</h1>
+      <form onSubmit={submitHandler} action="#" className="w-72 flex flex-col items-center justify-center">
+			<div className="text-red-400 text-xs font-bold text-center">
 				{error.empty}
 			</div>
 			<div className="flex flex-col items-center justify-center">
-        <input className="w-80 border border-inherit bg-slate-100	p-2 rounded my-2 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
+        <input className="w-72 border border-inherit bg-slate-100	p-1 rounded my-1 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
           onChange={changeHandler}
           type="text"
           name="name"
           value={formValues.name}
 					placeholder="Name"
         />
-				<div className="text-red-400 text-sm font-bold text-center">{error.name}</div>
+				{error.name ? (<div className="text-red-400 text-xs font-bold text-center">{error.name}</div>) : null}
 				</div>
 				
 				<div className="flex flex-col items-center justify-center">
-				<input className="w-80 border border-inherit bg-slate-100	p-2 rounded my-2 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
+				<input className="w-72 border border-inherit bg-slate-100	p-1 rounded my-1 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
           onChange={changeHandler}
           type="text"
           name="familyName"
           value={formValues.familyName}
 					placeholder="FamilyName"
         />
-				<div className="text-red-400 text-sm font-bold text-center">{error.familyName}</div>
+				{error.familyName ? (<div className="text-red-400 text-xs font-bold text-center">{error.name}</div>) : null}
 				</div>
 
 				<div className="flex flex-col items-center justify-center">
-				<input className="w-80 border border-inherit bg-slate-100	p-2 rounded my-2 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
+				<input className="w-72 border border-inherit bg-slate-100	p-1 rounded my-1 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
           onChange={changeHandler}
           type="text"
           name="userName"
           value={formValues.userName}
 					placeholder="UserName"
         />
-				<div className="text-red-400 text-sm font-bold text-center">{error.userName}</div>
+				{error.userName ? (<div className="text-red-400 text-xs font-bold text-center">{error.name}</div>) : null}
 				</div>
 
 				<div className="flex flex-col items-center justify-center">
-				<input className="w-80 border border-inherit bg-slate-100	p-2 rounded my-2 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
+				<input className="w-72 border border-inherit bg-slate-100	p-1 rounded my-1 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
           onChange={changeHandler}
           type="email"
           name="email"
           value={formValues.email}
 					placeholder="Email"
         />
-				<div className="text-red-400 text-sm font-bold text-center">{error.email}</div>
+				{error.email ? (<div className="text-red-400 text-xs font-bold text-center">{error.email}</div>) : null}
 				</div>
 
 				<div className="flex flex-col items-center justify-center">
-				<input className="w-80 border border-inherit bg-slate-100	p-2 rounded my-2 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
+				<input className="w-72 border border-inherit bg-slate-100	p-1 rounded my-1 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
           onChange={changeHandler}
           type="phone"
           name="phone"
           value={formValues.phone}
 					placeholder="Phone"
         />
-				<div className="text-red-400 text-sm font-bold text-center">{error.phone}</div>
+				{error.phone ? (<div className="text-red-400 text-xs font-bold text-center">{error.phone}</div>) : null}
 				</div>
 
 				<div className="flex flex-col items-center justify-center">
-				<input className="w-80 border border-inherit bg-slate-100	p-2 rounded my-2 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
+				<input className="w-72 border border-inherit bg-slate-100	p-1 rounded my-1 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
           onChange={changeHandler}
           type="password"
           name="password"
           value={formValues.password}
 					placeholder="Password"
         />
-				<div className="text-red-400 text-sm font-bold text-center">{error.password}</div>
+				{error.password ? (<div className="text-red-400 text-xs font-bold text-center">{error.password}</div>) : null}
 				</div>
 
 				<div className="flex flex-col items-center justify-center">
-				<input className="w-80 border border-inherit bg-slate-100	p-2 rounded my-2 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
+				<input className="w-72 border border-inherit bg-slate-100	p-1 rounded my-1 hover:bg-slate-300 focus:border-orange-700 text-slate-500"	
           onChange={changeHandler}
           type="password"
           name="confirmPassword"
           value={formValues.confirmPassword}
 					placeholder="Confirm Password"
         />
-				<div className="text-red-400 text-sm font-bold text-center">{error.confirmPassword}</div>
+				{error.confirmPassword ? (<div className="text-red-400 text-xs font-bold text-center">{error.confirmPassword}</div>) : null}
 				</div>
 
 				<div className="flex flex-col items-center justify-center">
-				<div className="flex items-center justify-center mb-2">
+				<div className="flex w-72 p-1 rounded bg-green-700 items-center justify-center mb-2">
 				<input
           onChange={changeHandler}
           type="checkbox"
           name="checkRule"
-          checked={formValues.chackRule}
+          checked={formValues.checkRule}
         />
 				<span className="ml-2 text-slate-300">Accept the <a href="#" className="text-blue-300">Rules</a>!</span>
 				</div>
-				<div className="text-red-400 text-sm font-bold text-center">{error.checkRule}</div>
+				{error.checkRule ? (<div className="text-red-400 text-xs font-bold text-center">{error.checkRule}</div>) : null}
 				</div>
 				<div className="flex flex-col items-center justify-center">
-				<button type="submit" className='w-80 font-bold rounded bg-green-500 text-white text-center p-3 shadow-xl hover:bg-green-600' >Sign Up</button>
-				<div className="text-green-400 text-sm font-bold text-center">{success?"Registration Was Successful.":""}</div>
+				<button type="submit" className='w-72 font-bold rounded bg-green-500 text-white text-center p-3 shadow-xl hover:bg-green-600' >Sign Up</button>
+
 </div>
       </form>
+			<ToastContainer
+position="top-center"
+autoClose={3000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+/>
     </>
   );
 };
